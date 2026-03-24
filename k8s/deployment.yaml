@@ -38,7 +38,7 @@ spec:
               path: /healthz
               port: 8000
             periodSeconds: 3
-            failureThreshold: 1
+            failureThreshold: 3
             # initialDelaySeconds: 10
 
           livenessProbe:

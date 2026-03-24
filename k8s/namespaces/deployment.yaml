@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: server
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: server
@@ -16,8 +17,23 @@ spec:
       - name: server
         image: luizcurti/hello-express
         resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
           limits:
             memory: "128Mi"
             cpu: "500m"
         ports:
         - containerPort: 3000
+        readinessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
+        livenessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+          failureThreshold: 3
